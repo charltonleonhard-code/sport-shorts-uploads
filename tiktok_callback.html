@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TikTok sign-in — Sport Shorts</title>
+<style>
+ body{font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      max-width:640px;margin:0 auto;padding:56px 24px;color:#1a1a1a}
+ h1{font-size:24px} code{background:#f2f2f2;padding:2px 6px;border-radius:4px}
+ #box{background:#f6f8fa;border:1px solid #d5d9de;border-radius:10px;padding:18px;margin:20px 0}
+ #code{font:14px ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all;
+       display:block;margin-bottom:14px}
+ button{background:#111;color:#fff;border:0;border-radius:8px;padding:11px 20px;
+        font:600 15px inherit;cursor:pointer}
+ .err{color:#b42318}
+</style></head><body>
+<h1>TikTok sign-in</h1>
+<div id="box">
+  <span id="code">Reading…</span>
+  <button id="copy" onclick="copyIt()">Copy code</button>
+</div>
+<p id="next">Paste this into the Sport Shorts app and press <b>Finish connecting</b>.</p>
+<script>
+  const p = new URLSearchParams(location.search);
+  const code = p.get("code"), err = p.get("error");
+  const el = document.getElementById("code");
+  if (code){
+    el.textContent = code;
+  } else {
+    el.textContent = err ? ("TikTok returned an error: " + err +
+                            (p.get("error_description") ? " — " + p.get("error_description") : ""))
+                         : "No code in this URL. Start the sign-in again from the app.";
+    el.className = "err";
+    document.getElementById("copy").style.display = "none";
+    document.getElementById("next").style.display = "none";
+  }
+  function copyIt(){
+    navigator.clipboard.writeText(code).then(() => {
+      const b = document.getElementById("copy");
+      b.textContent = "Copied"; setTimeout(() => b.textContent = "Copy code", 1600);
+    });
+  }
+</script>
+</body></html>
